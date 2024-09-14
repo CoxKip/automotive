@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Display Cars</title>
+</head>
+<body>
+    <h1>Cars</h1>
+    <ul>
+    {% for car in cars %}
+        <li>
+            <img src="{{ url_for('static', filename='images/' + car.Carimg) }}" alt="Car Image">
+            <h2>{{ car.Carname }}</h2>
+            <p>{{ car.Cardetails }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

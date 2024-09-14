@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="../static/css/style.css">
+        <script src="https://use.fontawesome.com/0bd7229511.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <style>
+            body {
+              background-color: #f5f5f5;
+              font-family: Arial, sans-serif;
+            }
+            .container-fluid {
+              padding-top: 50px;
+            }
+            .cardd {
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              border-radius: 10px;
+              padding: 20px;
+              background-color: #fff;
+            }
+            .cardd-header {
+              background-color: #4CAF50;
+              color: #fff;
+              padding: 10px;
+              border-radius: 10px 10px 0 0;
+            }
+            .cardd-body {
+              padding: 20px;
+            }
+            .form-label {
+              font-weight: bold;
+            }
+            .form-control {
+              height: 40px;
+              padding: 10px;
+              font-size: 16px;
+            }
+            .btn-primary {
+              background-color: #4CAF50;
+              background-color: #3e8e41;
+              padding: 10px 20px;
+              font-size: 16px;
+              font-weight: bold;
+            }
+            .btn-primary:hover {
+              background-color: #23527c;
+              border-color: #23527c;
+            }
+            .alert {
+          padding: 10px;
+          border-radius: 5px;
+          margin-bottom: 10px;
+        }
+        
+        .alert-success {
+          background-color: #dff0d8;
+          border-color: #d6e9c6;
+        }
+        
+        .close {
+          text-decoration: none;
+          color: #337ab7;
+          font-size: 18px;
+          font-weight: bold;
+          position: absolute;
+          right: 10px;
+          top: 10px;
+        }
+        
+        .close:hover {
+          color: #23527c;
+        }
+        
+        .alert strong {
+          font-size: 16px;
+          color: #3e8e41;
+        }
+          </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-8"></div>
+                <div class="col-sm-4">
+                          {%with messages=get_flashed_messages()%}
+                          {%if messages%}
+                          {%for message in messages%}
+
+                           <div class="alert alert-success alert-dismissible">
+                               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                               <strong>{{message}}</strong>
+                           </div>
+                            {%endfor%}
+                            {%endif%}
+                            {%endwith%}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <h1>Cars</h1>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                           <form method="POST" action="{{url_for('search')}}">
+                                              <input type="text" name="value" class="form-control" placeholder="Enter text">
+                                              <button class="submit" class="input-group-text btn btn-secondary">Search</button>
+                                              <a href="/search_results">
+                                                <button class="btn btn-success" type="button">All </button>
+                                              </a>
+                                           </form>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <form method="POST" action="{{url_for('logout')}}">
+                                            <button type="submit" class="btn btn-success">Logout</button>
+                                        </form>
+                                         <div class="row">
+                                          <a href="/add">
+                                            <button type="submit" class="btn btn-success">ADD cars</button>
+                                          </a>
+                                        </div>
+                                    </div>
+                                       <div class="col-md-2">
+                                       
+                                       </div>
+                                         
+                                  </div>
+                                </div>  
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm table-hover table-stripped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Carname</th>
+                                        <th>Cardetails</th>
+                                        <th>Carimg</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {%for row in cars%}
+                                        <tr>
+                                            <td>{{row.0}}</td>
+                                            <td>{{row.1}}</td>
+                                            <td>{{row.2}}</td>
+                                            <td>{{row.3}}</td>
+                                            <td>{{row.4}}</td>
+                                            <td>
+                                               <!-- Button trigger modal -->
+                                              
+                                            </td>
+                                        </tr>
+                                        <!--add modal-->
+                                        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="exampleModalLabel">Add New Car</h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                                </div>
+                                                <form method="POST" action="{{url_for('add')}}">
+                                                  <div class="modal-body">
+                                                    <label>Car Name</label>
+                                                    <input type="text" name="Carname" class="form-control" required>
+                                                    <label>Car Details</label>
+                                                    <input type="text" name="Cardetails" class="form-control" required>
+                                                    <label>Car Image</label>
+                                                    <input type="file" name="Carimg" class="form-control" required>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Add Car</button>
+                                                  </div>
+                                                </form>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        <!--end modal-->
+                                        <!-- Modal -->
+                                            <div class="modal fade" id="updateModal{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Update Modal</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                    <form method="POST" action="{{url_for('update')}}">
+                                                    <div class="modal-body">
+                                                       <input type="text" class="form-control" name="id" value="{{row.0}}">
+                                                       <label>Carname</label>
+                                                       <input type="text" name="Carname" class="form-control" value="{{row.1}}">
+                                                       <label>Cardetails</label>
+                                                       <input type="text" name="Cardetails" class="form-control" value="{{row.2}}">
+                                                       <label>Carimg</label>
+                                                       <input type="image" name="Carimg" class="form-control" value="{{row.3}}">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                   </form>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        <!--end modal for update-->  
+
+                          
+                                        <!--delete modal-->                                        
+                                            <div class="modal fade" id="deleteModal{{row.0}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            Are you sure you want to delete this record?
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span arial-hidden="true">&times;</span>
+
+                                                            </button>
+                                                        </div>
+                                                        <form method="POST" action="{{url_for('delete')}}">
+                                                        <div class="modal-body">
+                                                            <input type="text" name="id" value="{{row.0}}" class="form-control" hidden="true">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                                        </div>
+                                                    </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                    {%endfor%}
+                                </tbody>
+                               
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
